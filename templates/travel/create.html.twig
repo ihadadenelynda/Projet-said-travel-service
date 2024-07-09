@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div>
+{{ form_start(travelForm) }}
+    {{ form_widget(travelForm) }}
+    <button>Créer</button>
+    {{ form_end(travelForm) }}
+</div>
+{% endblock %}
+
+
+{% block title %}
+Créer un nouveau voyage | {{ parent() }}
+{% endblock %}

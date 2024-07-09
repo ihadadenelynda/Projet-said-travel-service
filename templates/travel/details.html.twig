@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ travel.nom }} | {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <div class="travel-details">
+        <div>
+            <img src="{{ asset ('img/travels/' ~ travel.photo) }}" alt="{{ travel.nom}}">
+        </div>
+
+        <div class="travel-details-infos">
+            <h2>Londres</h2>
+            <div> Description: {{ travel.description }}</div>
+            <div> Nombre de places: {{ travel.maxInscriptions }}</div>
+            <div> Date limite d'inscription: {{ travel.registrationDeadLine | date("Y-m-d") }}</div>
+            <div>Date de départ {{ travel.startDate|date("Y-m-d") }} </div>
+            <div>Date de retour {{ travel.endDate|date("Y-m-d") }}</div>
+            <div> Prix par personne {{  travel.price }} € </div>
+        </div>
+    </div>
+{% endblock %}
+
+

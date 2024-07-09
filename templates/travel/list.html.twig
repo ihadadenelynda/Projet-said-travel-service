@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <section class="travels-list">
+        {% for travel in travels %}
+            <article>
+
+                <a href="{{ path('travel_details',{'id':travel.id}) }}"
+                   title="View travel's details | {{travel.description }} ">
+                    <img src="{{ asset( 'img/travels/' ~ travel.photo) }}" alt="{{ travel.nom }}">
+                </a>
+            </article>
+        {% endfor %}
+    </section>
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+
