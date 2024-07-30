@@ -11,13 +11,32 @@
         </div>
 
         <div class="travel-details-infos">
-            <h2>Londres</h2>
-            <div> Description: {{ travel.description }}</div>
-            <div> Nombre de places: {{ travel.maxInscriptions }}</div>
-            <div> Date limite d'inscription: {{ travel.registrationDeadLine | date("Y-m-d") }}</div>
-            <div>Date de départ {{ travel.startDate|date("Y-m-d") }} </div>
-            <div>Date de retour {{ travel.endDate|date("Y-m-d") }}</div>
-            <div> Prix par personne {{  travel.price }} € </div>
+            <h2>{{ travel.nom }} </h2>
+            <div> Description : {{ travel.description }}</div>
+            <div> Nombre de places : {{ travel.maxInscriptions }}</div>
+            <div> Date limite d'inscription : {{ travel.registrationDeadLine | date("Y-m-d") }}</div>
+            <div>Date de départ : {{ travel.startDate|date("Y-m-d") }} </div>
+            <div>Date de retour : {{ travel.endDate|date("Y-m-d") }}</div>
+            <div>Etat : {{ travel.etat }}</div>
+            <div> Prix par personne : {{ travel.price }} € </div>
+
+            <div class="container-btn">
+            {% if app.user %}
+            <button><a href="{{ path('inscription_travel', { 'id': travel.id }) }}" class="btn btn-primary">S'inscrire</a></button>
+                <form method="post" action="{{ path('desinscription_travel', {id: travel.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir vous désinscrire de ce voyage ?');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('unsubscribe' ~ travel.id) }}">
+                <button type="submit">Se désinscrire</button>
+                {% if is_granted("ROLE_ADMIN") %}
+                <button><a href="{{ path('admin_travels_edit', { 'id': travel.id }) }}" class="btn btn-primary">Modifier</a></button>
+                    <button><a href="{{ path("admin_travels_users", {'id': travel.id}) }}"> voyageurs</a></button>
+                    <form class="delete" method="post" action="{{ path('admin_travels_travel.delete', {id: travel.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce voyage ?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ travel.id) }}">
+                        <button type="submit">Supprimer</button>
+                    </form>
+                {% endif %}
+            {% endif %}
+            </div>
+
         </div>
     </div>
 {% endblock %}

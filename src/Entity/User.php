@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -22,6 +23,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank(message:"entrez une adresse mail")]
+    #[Assert\Email(message:'L\'adresse e-mail {{ value }} est incorrecte')]
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
@@ -34,13 +37,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      */
+
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\Column(length: 100, nullable: true)]
+    #[Assert\NotBlank(message:'entrez votre prénom')]
+    #[Assert\Regex(
+        pattern: '/\d/',
+        message: 'Votre prénom ne peux pas contenir des chiffres',
+        match: false)]
+    #[ORM\Column(length: 100, nullable: false)]
     private ?string $firstName = null;
 
-    #[ORM\Column(length: 30, nullable: true)]
+    #[Assert\NotBlank(message:'entrez votre nom')]
+    #[Assert\Regex(
+        pattern: '/\d/',
+        message: 'Votre nom ne peux pas contenir des chiffres',
+        match: false)]
+    #[Assert\Length(
+        min:3,
+        max: 30,
+        minMessage: 'Minimun {{ limit }} caractères',
+        maxMessage: 'Maximum {{ limit }} caractères',
+    )]
+    #[ORM\Column(length: 30, nullable: false)]
     private ?string $lastName = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
@@ -67,9 +87,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private bool $isVerified = false;
 
+    /**
+     * @var Collection<int, Appointment>
+     */
+    #[ORM\OneToMany(targetEntity: Appointment::class, mappedBy: 'user')]
+    private Collection $appointments;
+
+    /**
+     * @var Collection<int, Appointment>
+     */
+    #[ORM\OneToMany(targetEntity: Appointment::class, mappedBy: 'createdBy')]
+    private Collection $appointment;
+
     public function __construct()
     {
         $this->travels = new ArrayCollection();
+        $this->appointments = new ArrayCollection();
+        $this->appointment = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -101,15 +135,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @see UserInterface
-     * @return list<string>
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
+        return $this->roles;
     }
 
     /**
@@ -241,7 +270,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function addTravel(Travel $travel): static
     {
         if (!$this->travels->contains($travel)) {
-            $this->travels->add($travel);
+            $this->travels[]= $travel;
             $travel->addUser($this);
         }
 
@@ -267,5 +296,47 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->isVerified = $isVerified;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Appointment>
+     */
+    public function getAppointments(): Collection
+    {
+        return $this->appointments;
+    }
+
+    public function addAppointment(Appointment $appointment): static
+    {
+        if (!$this->appointments->contains($appointment)) {
+            $this->appointments->add($appointment);
+            $appointment->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAppointment(Appointment $appointment): static
+    {
+        if ($this->appointments->removeElement($appointment)) {
+            // set the owning side to null (unless already changed)
+            if ($appointment->getUser() === $this) {
+                $appointment->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString(){
+        return $this->getFirstName() .' '. $this->getLastName();
+    }
+
+    /**
+     * @return Collection<int, Appointment>
+     */
+    public function getAppointment(): Collection
+    {
+        return $this->appointment;
     }
 }

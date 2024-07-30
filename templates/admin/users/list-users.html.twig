@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+            <h1>Liste des utilisateurs inscrits</h1>
+        <table>
+            <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Email</th>
+                <th>Téléphone</th>
+                <th>Role</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+    {%for user in users %}
+            <tr>
+                <td> {{ user.lastName }}</td>
+                <th>{{ user.firstName}}</th>
+                <th>{{ user.email }}</th>
+                <th>{{ user.phoneNumber }}</th>
+                <th> {% for role in user.roles %}
+                        {{ role }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}</th>
+                <th> <form method="post" action="{{ path('admin_users_delete', {id: user.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                    </form>
+                    <button><a href="{{ path('admin_users_edit', {id: user.id}) }}" type="submit" >Modifier</a></button>
+                </th>
+            </tr>
+    {% endfor %}
+            </tbody>
+        </table>
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+

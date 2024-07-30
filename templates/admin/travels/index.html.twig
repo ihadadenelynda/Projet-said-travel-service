@@ -1,4 +1,6 @@
-{% extends 'base.html.twig' %}
+{% extends "base.html.twig" %}
+
+{% block title %}Liste des voyages{% endblock %}
 
 {% block body %}
 
@@ -8,14 +10,10 @@
                 <a href="{{ path('travel_details',{'id':travel.id}) }}"
                    title="View travel's details | {{travel.description }} ">
                     <img src="{{ asset( 'img/travels/' ~ travel.photo) }}" alt="{{ travel.nom }}">
+                    <p>{{ travel.nom }}</p>
                 </a>
-                <p>{{ travel.nom }}</p>
             </article>
         {% endfor %}
     </section>
-{% endblock %}
-
-{% block title %}
 
 {% endblock %}
-

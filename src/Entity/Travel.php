@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TravelRepository::class)]
 class Travel
@@ -15,22 +16,25 @@ class Travel
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
+    #[Assert\NotBlank(message: 'Entrez le nom du voyage!')]
+    #[Assert\Length(max: 255)]
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
+    #[Assert\Length(min:50,max: 500)]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
-
+    #[Assert\Range(min: 1, max: 30)]
     #[ORM\Column]
     private ?int $maxInscriptions = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $registrationDeadLine = null;
 
+    #[Assert\GreaterThan(propertyPath: "registrationDeadLine")]
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $startDate = null;
-
+    #[Assert\GreaterThan(propertyPath: "startDate")]
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $endDate = null;
 
@@ -43,9 +47,11 @@ class Travel
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'travels')]
     private Collection $users;
 
+
     #[ORM\ManyToOne(inversedBy: 'travels')]
     private ?Etat $etat = null;
 
+    #[Assert\Length(min: 5,max: 30)]
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $photo = null;
 
@@ -154,7 +160,9 @@ class Travel
     public function addUser(User $user): static
     {
         if (!$this->users->contains($user)) {
-            $this->users->add($user);
+            $this->users[] = $user;
+            $user->addTravel($this);
+            $this->maxInscriptions--;
         }
 
         return $this;
@@ -162,7 +170,11 @@ class Travel
 
     public function removeUser(User $user): static
     {
-        $this->users->removeElement($user);
+        if ($this->users->removeElement($user)) {
+
+                $user->removeTravel($this);
+                $this->maxInscriptions++;
+        }
 
         return $this;
     }

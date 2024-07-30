@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>My Appointments</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Motif</th>
+            <th>User</th>
+            <th>Created By</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for appointment in appointments %}
+            <tr>
+                <td>{{ appointment.id }}</td>
+                <td>{{ appointment.appointmentTime|date('Y-m-d H:i') }}</td>
+                <td>{{ appointment.motif }}</td>
+                <td>{{ appointment.user.email }}</td>
+                <td>{{ appointment.createdBy.email }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('appointment_new') }}">Create new appointment</a>
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+

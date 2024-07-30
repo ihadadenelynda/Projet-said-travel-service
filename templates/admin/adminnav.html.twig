@@ -1,0 +1,37 @@
+<link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+{% block body %}
+<aside class="col-3 border border-light bg-white p-2">
+    <article class="card-mb-3">
+        <div class="card-header">
+            Voyages
+        </div>
+        <div class="card-body">
+            <p><a href="{{ path('admin_travels_index') }}">Liste des voyages</a></p>
+            <p><a href="{{ path('admin_travels_creation_travels') }}">Créer un voyage</a></p>
+        </div>
+    </article>
+    <article class="card-mb-3">
+        <div class="card-header">
+            Utilisateurs
+        </div>
+        <div class="card-body">
+            <p><a href="{{ path('admin_users_list') }}">Liste des utilisateurs</a></p>
+            <p><a href="{{ path('admin_users_new',  { 'id': app.user.id }) }}">Ajouter un utilisateur</a></p>
+        </div>
+    </article>
+
+    <article class="card-mb-3">
+        <div class="card-header">
+            Rendez vous
+        </div>
+        <div class="card-body">
+            <p><a href="{{ path('app_admin_appointment_index') }}">Rendez vous</a></p>
+            <p><a href="{{ path('app_admin_invite_new') }}">Invité</a></p>
+            <p><a href="{{ path('app_admin_invite_index') }}">Liste invités</a></p>
+
+        </div>
+    </article>
+
+</aside>
+
+{% endblock %}

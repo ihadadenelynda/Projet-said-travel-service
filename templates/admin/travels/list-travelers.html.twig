@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>Utilisateurs inscrits pour le voyage {{ travel.nom }}</h2>
+
+    {% if travel.users is empty %}
+        <p>Aucun utilisateur n'est inscrit à ce voyage.</p>
+    {% else %}
+        <ul>
+            {% for user in travel.users %}
+                <li>{{ user.firstName }} {{ user.lastName }} - {{ user.email }} - {{ user.phoneNumber }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+

@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier le Voyage{% endblock %}
+
+
+
+{% block body %}
+<h1> Modifier le voyage: {{ travel.nom }}</h1>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button type="submit" class="btn">Enregistrer les modifications</button>
+    {{ form_end(form) }}
+
+    <button><a href="{{ path('list_travels') }}" class="btn btn-secondary">Retour à la liste des voyages</a></button>
+{% endblock %}
+

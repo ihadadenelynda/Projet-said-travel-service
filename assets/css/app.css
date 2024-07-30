@@ -2,9 +2,11 @@ body {
 
     background: linear-gradient(rgb(139, 183, 195), #0b6581) fixed;
     color: #EEE;
-    font-family: 'Crimson Text', serif;
 }
 
+* {
+    font-family: 'Crimson Text', serif;
+}
 
 
 a {
@@ -32,6 +34,10 @@ header img {
     height: 70px;
 }
 
+head{
+    background-color: plum;
+}
+
 nav ul {
     display: flex;
     list-style: none;
@@ -42,24 +48,62 @@ nav li {
     margin-right: 1rem;
 }
 
+#map {
+    height: 400px;
+    width: 50%;
+    margin-left: 20px;
+    margin-right: 40px;
+    border-radius: 10px;
+    box-shadow: 5px 5px 0 0 #03053c;
+}
+
+.container-contact{
+    display: flex;
+    grid-template-columns: auto;
+}
+
 .travels-list {
     display: grid;
     grid-gap: 10px;
-    grid-template-columns: repeat(auto-fill,minmax(140px,1fr));
+    grid-template-columns: repeat(auto-fill,minmax(300px,1fr));
+    margin-right: 0;
+}
+
+article {
+    text-align: center;
+    margin: auto;
+    padding: 0;
 }
 
 label {
+    margin-left: 20px;
     display: block;
 }
 
 input,
-textarea,
-select{
+select,
+button{
+    margin-left: 20px;
     margin-bottom: 1rem;
     box-sizing: border-box;
     max-width: 50%;
-    width: 150px;
+    width: 250px;
 }
+
+textarea{
+    margin-left: 20px;
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+    max-width: 50%;
+    width: 250px;
+    height: 80px;
+}
+
+button {
+    width: 140px;
+}
+
+
 
 .flash {
     padding:20px;
@@ -72,6 +116,7 @@ select{
 .flash-success {background-color: lawngreen}
 
 .travel-details {
+    margin: 30px;
     display: grid;
     grid-template-columns: 1fr; grid-gap: 30px;
 }
@@ -81,13 +126,49 @@ footer {
     bottom: 10px;
     left: 20px;
     width: 100%;
+    margin-left: 80px;
 }
 
 .travel-details-infos > div {
     margin-bottom: 1rem;
 }
+
+#calendrier {
+    max-width: 100%;
+    margin: auto;
+}
+
 @media screen and (min-width: 700px) {
     .travel-details {
         grid-template-columns: 300px 1fr;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+
+    thead tr {
+        display: none;
+    }
+
+    tr {
+        margin-bottom: 1rem;
+    }
+
+    td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem;
+    }
+
+    td:before {
+        content: attr(data-label);
+        flex-basis: 50%;
+        text-align: right;
+        padding-right: 10px;
+        font-weight: bold;
     }
 }

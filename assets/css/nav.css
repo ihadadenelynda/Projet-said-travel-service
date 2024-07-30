@@ -18,8 +18,27 @@ nav li {
     margin-right: 1rem;
 }
 
-a {
+nav a {
     padding: 20px;
     color: inherit;
     text-decoration: none;
+}
+
+/*Responsivité pour les tablettes*/
+@media(max-width: 810px){
+    .navbar {
+        width:100%;
+        height: 100vh;
+        justify-content: center;
+    }
+
+    .menu-listing{
+        flex-direction: column;
+    }
+
+    .menu-listing a {
+        box-sizing: border-box;
+        display: block;
+        font-size: 1.5rem;
+    }
 }

@@ -1,0 +1,48 @@
+.col-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(300px,1fr));
+}
+
+.card-mb-3 {
+    margin: 80px;
+}
+
+/* Style de base pour le tableau */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 18px;
+    text-align: left;
+}
+
+/* Style pour les en-têtes de tableau */
+table th, table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+}
+
+/* Style pour les en-têtes */
+thead{
+    background-color: #009879;
+    color: #ffffff;
+    text-align: center;
+}
+
+button {
+    margin-left: 10px;
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+    max-width: 60%;
+    width: 150px;
+}
+
+
+form.delete {
+    width: 250px;
+    display: flex;
+}
+
+.container-btn {
+    display: flex;
+}

@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes Voyages{% endblock %}
+
+{% block body %}
+    <h1>Mes Voyages</h1>
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <table>
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Description</th>
+            <th>Date de début</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for travel in travels %}
+            <tr>
+                <td>{{ travel.nom }}</td>
+                <td>{{ travel.description }}</td>
+                <td>{{ travel.startDate|date('d/m/Y') }}</td>
+                <td>
+                    <form method="post" action="{{ path('desinscription_travel', {id: travel.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir vous désinscrire de ce voyage ?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('unsubscribe' ~ travel.id) }}">
+                        <button type="submit" class="btn btn-danger">Se désinscrire</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

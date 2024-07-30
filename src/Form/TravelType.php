@@ -40,7 +40,9 @@ class TravelType extends AbstractType
 
                 'class' => Etat::class,
 'choice_label' => 'libelle',
+
             ])
+            ->add('photo')
         ;
     }
 
