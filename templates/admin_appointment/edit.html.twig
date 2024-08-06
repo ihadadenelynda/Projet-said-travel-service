@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier un Rendez vous{% endblock %}
+
+{% block body %}
+    <h1>Modifier un Rendez vous</h1>
+
+    {{ include('admin_appointment/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+    <button><a href="{{ path('app_admin_appointment_index') }}">Retour</a></button>
+
+    {{ include('admin_appointment/_delete_form.html.twig') }}
+{% endblock %}

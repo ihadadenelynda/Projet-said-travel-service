@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Appointment index{% endblock %}
+
+{% block body %}
+    <h1>Mes rendez vous</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom et Prénom</th>
+                <th>Date et heure </th>
+                <th>Motif</th>
+                <th>Crée par</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for appointment in appointments %}
+            <tr>
+                <td>{{ appointment.user }}</td>
+                <td> {{ appointment.appointmentTime|date('y-m-d h:i')}} </td>
+                <td>{{ appointment.motif }}</td>
+                <td>{{ appointment.createdBy.email }}</td>
+
+                <td>
+                    <button><a href="{{ path('appointment_show', {'id': appointment.id}) }}">show</a></button>
+                    <button><a href="{{ path('appointment_edit', {'id': appointment.id}) }}">edit</a></button>
+                </td>
+            </tr>
+             {% else %}
+            <tr>
+                <td colspan="5">Vous n'avez pas encore pris de rendez vous</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <button><a href="{{ path('appointment_new') }}">Create new</a></button>
+{% endblock %}

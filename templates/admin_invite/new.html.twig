@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvel Invité{% endblock %}
+
+{% block body %}
+    <h1>Créer un nouvel invité</h1>
+
+    {{ include('admin_invite/_form.html.twig') }}
+
+    <button><a href="{{ path('app_admin_invite_index') }}">Retour</a></button>
+{% endblock %}

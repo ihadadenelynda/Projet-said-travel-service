@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Appointment{% endblock %}
+
+{% block body %}
+    <h1>Appointment</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ appointment.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom et Prénom</th>
+                <td>{{user.firstName}}  {{ user.lastName }}</td>
+            </tr>
+            <tr>
+                <th>AppointmentTime</th>
+                <td>{{ appointment.appointmentTime ? appointment.appointmentTime|date('Y-m-d h:i') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Motif</th>
+                <td>{{ appointment.motif }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <button><a href="{{ path('app_admin_appointment_index') }}">Retour</a></button>
+
+    <button><a href="{{ path('app_admin_appointment_edit', {'id': appointment.id}) }}">Modifier</a></button>
+
+    {{ include('admin_appointment/_delete_form.html.twig') }}
+{% endblock %}

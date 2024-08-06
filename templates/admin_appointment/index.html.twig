@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau des Rendez vous{% endblock %}
+
+{% block body %}
+    <h1>Tableau des Rendez vous</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>AppointmentTime</th>
+                <th>Motif</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for appointment in appointments %}
+            <tr>
+                <td>{{ appointment.id }}</td>
+                <td>{{ appointment.appointmentTime ? appointment.appointmentTime|date('Y-m-d h:i') : '' }}</td>
+                <td>{{ appointment.motif }}</td>
+                <td>
+                    <button><a href="{{ path('app_admin_appointment_show', {'id': appointment.id}) }}">afficher</a></button>
+                   <button><a href="{{ path('app_admin_appointment_edit', {'id': appointment.id}) }}">Modifier</a></button>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <button><a href="{{ path('app_admin_appointment_new') }}">Nouveau</a></button>
+{% endblock %}

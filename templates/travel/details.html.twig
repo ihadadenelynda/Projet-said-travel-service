@@ -23,19 +23,23 @@
             <div class="container-btn">
             {% if app.user %}
             <button><a href="{{ path('inscription_travel', { 'id': travel.id }) }}" class="btn btn-primary">S'inscrire</a></button>
-                <form method="post" action="{{ path('desinscription_travel', {id: travel.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir vous désinscrire de ce voyage ?');">
-                    <input type="hidden" name="_token" value="{{ csrf_token('unsubscribe' ~ travel.id) }}">
-                <button type="submit">Se désinscrire</button>
+                <form class="desinscription" method="post" action="{{ path('desinscription_travel', {id: travel.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir vous désinscrire de ce voyage ?');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('desinscription' ~ travel.id) }}">
+                    <button type="submit">Se désinscrire</button></form>
+
                 {% if is_granted("ROLE_ADMIN") %}
-                <button><a href="{{ path('admin_travels_edit', { 'id': travel.id }) }}" class="btn btn-primary">Modifier</a></button>
-                    <button><a href="{{ path("admin_travels_users", {'id': travel.id}) }}"> voyageurs</a></button>
+                    <button><a href="{{ path('admin_travels_edit', { 'id': travel.id }) }}" class="btn btn-primary">Modifier</a></button>
+                    <button><a href="{{ path("admin_travels_users", {'id': travel.id}) }}"> Voyageurs</a></button>
+
                     <form class="delete" method="post" action="{{ path('admin_travels_travel.delete', {id: travel.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce voyage ?');">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ travel.id) }}">
+                        <input type="hidden" name="_method" value="DELETE">
                         <button type="submit">Supprimer</button>
                     </form>
                 {% endif %}
             {% endif %}
             </div>
+
 
         </div>
     </div>

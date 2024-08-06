@@ -10,10 +10,11 @@
         {% if app.user %}
             <li><a href="{{ path('profile_show') }}" title="Home">Profil</a></li>
             <li><a href="{{ path('app_logout') }}" title="Logout">Se déconnecter({{ app.user.firstname }})</a></li>
+        {% if is_granted("ROLE_USER") %}
             <li><a href="{{ path('list_travels') }}" title="Travel">Nos voyages</a></li>
+        {% endif %}
 
         {% if is_granted("ROLE_ADMIN") %}
-            <li><a href="{{ path('admin_travels_creation_travels') }}" title="Travel">Créer un voyage</a></li>
             <li><a href="{{ path('admin_index') }}" title="Admin dashboard">Administration</a></li>
         {% endif %}
         {% else %}

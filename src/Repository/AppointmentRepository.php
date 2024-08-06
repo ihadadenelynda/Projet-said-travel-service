@@ -41,6 +41,9 @@ class AppointmentRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+
+
     /**
      * @return Appointment[] Returns an array of Appointment objects
      */
@@ -50,8 +53,22 @@ class AppointmentRepository extends ServiceEntityRepository
             ->where('a.user = :user')
             ->orWhere('a.createdBy = :user')
             ->setParameter('user', $user)
-            ->orderBy('a.appointmentDate', 'ASC')
+            ->orderBy('a.appointmentTime', 'ASC')
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * Find an appointment by slot
+     */
+    public function findOneBySlot(string $start, string $end): ?Appointment
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.appointmentTime >= :start')
+            ->andWhere('a.appointmentTime < :end')
+            ->setParameter('start', $start)
+            ->setParameter('end', $end)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

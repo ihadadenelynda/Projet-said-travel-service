@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Appointment{% endblock %}
+
+{% block body %}
+    <h1>Détails de mon rendez vous</h1>
+
+    <table class="table">
+        <tbody>
+
+        <tr>
+            <th>Date et heure</th>
+            <td> {{ appointment.appointmentTime | date('y-m-d h:i')}}  </td>
+        </tr>
+
+            <tr>
+                <th>Motif</th>
+                <td>{{ appointment.motif }}</td>
+            </tr>
+            <tr>
+                <th>Rendez vous pour </th>
+                <td>{{ appointment.user.firstName }} {{ appointment.user.lastName }} ({{ appointment.user.email }})</td>
+            </tr>
+            <tr>
+                <th>Créé par</th>
+                <td>{{ appointment.createdBy.email }}</td>
+            </tr>
+            <tr>
+                <th>Téléphone</th>
+                <td>{{ appointment.user.phoneNumber}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <button><a href="{{ path('appointment_index') }}">back to list</a></button>
+
+    <button><a href="{{ path('appointment_edit', {'id': appointment.id}) }}">edit</a></button>
+
+    {{ include('appointment/_delete_form.html.twig') }}
+{% endblock %}

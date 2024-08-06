@@ -100,7 +100,7 @@ textarea{
 }
 
 button {
-    width: 140px;
+    width: 150px;
 }
 
 
@@ -133,14 +133,10 @@ footer {
     margin-bottom: 1rem;
 }
 
-#calendrier {
-    max-width: 100%;
-    margin: auto;
-}
 
 @media screen and (min-width: 700px) {
     .travel-details {
-        grid-template-columns: 300px 1fr;
+        grid-template-columns: 400px 1fr;
     }
 }
 

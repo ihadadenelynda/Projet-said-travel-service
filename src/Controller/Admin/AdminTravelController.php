@@ -53,24 +53,19 @@ class AdminTravelController extends AbstractController
         if ($travelForm->isSubmitted() && $travelForm->isValid()) {
             $travel->setEtat($etatRepository->find($travel->getEtat()->getId()));
 
-
             $entityManager->persist($travel);
             $entityManager->flush();
 
             $this->addFlash('success', 'Voyage créé !');
             return $this->redirectToRoute('list_travels');
         }
-
-
         return $this->render('travel/create.html.twig', [
             'travelForm' => $travelForm->createView()
         ]);
     }
 
 
-
-
-    #[Route('/travels/{id}/edit', name: '_edit')]
+    #[Route('/travels/{id}/edit', name: '_edit', methods:['GET', 'POST'])]
     public function edit(int $id,TravelRepository $travelRepository,Request $request,EntityManagerInterface $entityManager): Response
     {
         $travel = $travelRepository->find($id);
@@ -96,7 +91,6 @@ class AdminTravelController extends AbstractController
         ]);
     }
 
-
     #[Route('/{id}/delete', name: '_travel.delete',methods:['DELETE'])]
     public function delete(Travel $travel,Request $request,EntityManagerInterface $entityManager): Response
     {
@@ -109,7 +103,7 @@ class AdminTravelController extends AbstractController
         } else {
             $this->addFlash('error', 'Échec de la validation du token CSRF.');
         }
-
         return $this->redirectToRoute('list_travels');
+
     }
 }
