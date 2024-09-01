@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 #[Route('/admin/users', name:'admin_users')]
 class AdminUserController extends AbstractController
@@ -24,13 +25,29 @@ class AdminUserController extends AbstractController
     }
 
     #[Route('/new', name: '_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = new User();
+        $user->setRoles(["ROLE_USER"]);
+
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // Récupérer le mot de passe en clair depuis le formulaire
+            $plainPassword = $form->get('password')->getData();
+
+            // Hacher le mot de passe
+            $hashedPassword = $passwordHasher->hashPassword(
+                $user,
+                $plainPassword
+            );
+
+            // Mettre à jour l'utilisateur avec le mot de passe haché
+            $user->setPassword($hashedPassword);
+
+
             $entityManager->persist($user);
             $entityManager->flush();
 

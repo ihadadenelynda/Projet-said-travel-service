@@ -18,7 +18,7 @@
         {% for appointment in appointments %}
             <tr>
                 <td>{{ appointment.id }}</td>
-                <td>{{ appointment.appointmentTime ? appointment.appointmentTime|date('Y-m-d h:i') : '' }}</td>
+                <td>{{ appointment.appointmentTime ? appointment.appointmentTime|date('Y-m-d H:i') : '' }}</td>
                 <td>{{ appointment.motif }}</td>
                 <td>
                     <button><a href="{{ path('app_admin_appointment_show', {'id': appointment.id}) }}">afficher</a></button>

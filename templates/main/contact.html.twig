@@ -8,11 +8,11 @@ Nous contacter
     <div class="container-contact">
     <div id="map"></div>
     <div id="coordonnees">
-        <h2>Nos coordonnées</h2>
-        <h3>Adresse:</h3>
+        <h1>Nos coordonnées à Tigzirt en Algérie</h1>
+        <h2>Adresse:</h2>
         <p>Cité 18 bungalows</p>
         <p>Tigzirt sur mer, Tizi Ouzou</p>
-        <h3><span class="material-symbols-outlined">call</span> <a href="tel:+213 26 25 90 44" target="_blank" >Fixe : +213 26 25 90 44</a></h3>
+        <h3><span class="material-symbols-outlined">call</span><a href="tel:+213 26 25 90 44" target="_blank" >Fixe : +213 26 25 90 44</a></h3>
         <h3><span class="material-symbols-outlined">smartphone</span><a href="tel:+213 7 90 94 42 01" target="_blank">Mobile : +213 7 90 94 42 01</a></h3>
         <h3><span class="material-symbols-outlined">mail</span><a href="mailto:agence.said.travel@gmail.com" target="_blank"> Email : agence.said.travel@gmail.com</a></h3>
         <h3><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 48 48">
@@ -20,7 +20,7 @@ Nous contacter
             </svg>
             <a href="https://www.facebook.com/profile.php?id=100063528551343" target="_blank">Facebook</a></h3>
 {% if app.user %}
-        <button><a href=" {{ path('appointment_new') }}">Prendre rendez vous</a></button>
+        <button><a href="{{ path('appointment_new') }}">Prendre rendez vous</a></button>
         <button> <a href="{{ path('appointment_index') }}">Mes rendez vous</a></button>
         {% endif %}
     </div>
@@ -30,13 +30,13 @@ Nous contacter
             crossorigin=""></script>
     <script>
         //On initialise la carte
-            var map = L.map('map').setView([36.89222, 4.13087], 13);
+            let map = L.map('map').setView([36.89222, 4.13087], 13);
         //On charge les tuiles
              L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-             maxZoom: 19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+             maxZoom: 19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
              }).addTo(map);
         //On crée le marqueur sur les coordonnées gps de l'agence avec une popup ouverte
-              var marker = L.marker([36.89222, 4.13087]).addTo(map);
+              let marker = L.marker([36.89222, 4.13087]).addTo(map);
               marker.bindPopup("<h2>Agence <br>Said Travel Services</h2>").openPopup();
     </script>
 {% endblock %}

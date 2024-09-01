@@ -42,7 +42,6 @@ class AdminTravelController extends AbstractController
     public function create(Request                $request,
                            EtatRepository         $etatRepository,
                            EntityManagerInterface $entityManager,
-                           UserRepository         $userRepository,
     ): Response
     {
         $travel = new Travel();
@@ -90,6 +89,8 @@ class AdminTravelController extends AbstractController
             'travel'=>$travel,
         ]);
     }
+
+
 
     #[Route('/{id}/delete', name: '_travel.delete',methods:['DELETE'])]
     public function delete(Travel $travel,Request $request,EntityManagerInterface $entityManager): Response

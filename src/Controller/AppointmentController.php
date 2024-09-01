@@ -54,6 +54,7 @@ class AppointmentController extends AbstractController
             $slot = $this->slotService->calculateSlot($datetime);
 
             if ($this->slotService->isSlotAvailable($datetime)) {
+
                 $appointment->setSlot($slot);
                 $appointment->setCreatedBy($this->getUser());
                 $appointment->setUser($appointment->getUser() ?: $this->getUser());
@@ -77,6 +78,7 @@ class AppointmentController extends AbstractController
 
     public function show(Appointment $appointment): Response
     {
+
         return $this->render('appointment/show.html.twig', [
             'appointment' => $appointment,
         ]);
@@ -110,7 +112,6 @@ class AppointmentController extends AbstractController
 
         return $this->redirectToRoute('appointment_index', [], Response::HTTP_SEE_OTHER);
     }
-
     #[Route('/user', name: 'appointment_user', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
     public function userAppointments(AppointmentRepository $appointmentRepository): Response
@@ -122,14 +123,21 @@ class AppointmentController extends AbstractController
             'appointments' => $appointments,
         ]);
     }
-
     #[Route('/available-slots', name: 'appointment_available_slots', methods: ['GET'])]
     public function availableSlots(Request $request): Response
     {
         $start = new \DateTime('now');
         $end = (clone $start)->modify('+1 year');
         $slots = $this->slotService->getAvailableSlots($start, $end);
-
+        // Filtrer les créneaux déjà réservés
+        $availableSlots = [];
+        foreach ($slots as $slot) {
+            $slotTime = new \DateTime($slot['time']);
+            if ($this->slotService->isSlotAvailable($slotTime)) {
+                $availableSlots[] = $slot;
+            }
+        }
+        //return $this->json(['slots' => $availableSlots]);
         return $this->json(['slots' => $slots]);
     }
 }

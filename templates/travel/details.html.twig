@@ -26,6 +26,7 @@
                 <form class="desinscription" method="post" action="{{ path('desinscription_travel', {id: travel.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir vous désinscrire de ce voyage ?');">
                     <input type="hidden" name="_token" value="{{ csrf_token('desinscription' ~ travel.id) }}">
                     <button type="submit">Se désinscrire</button></form>
+                <button><a href="{{ path('user_travels') }}">Mes voyages</a></button>
 
                 {% if is_granted("ROLE_ADMIN") %}
                     <button><a href="{{ path('admin_travels_edit', { 'id': travel.id }) }}" class="btn btn-primary">Modifier</a></button>

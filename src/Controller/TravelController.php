@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Travel;
+use App\Entity\User;
 use App\Form\TravelType;
 use App\Repository\EtatRepository;
 use App\Repository\TravelRepository;
@@ -49,7 +50,6 @@ class TravelController extends AbstractController
             "travel" => $travel
         ]);
     }
-
      #[Route('/travel/{id}/inscription', name:'inscription_travel')]
           public function inscription(Travel $travel, UserInterface $user): Response
       {
@@ -62,11 +62,17 @@ class TravelController extends AbstractController
 
         return $this->redirectToRoute('travel_details', ['id' => $travel->getId()]);
       }
-
     #[Route('/travel/{id}/desinscrire', name:'desinscription_travel')]
-
-    public function unsubscribe(Travel $travel, UserInterface $user): Response
+    public function desinscription(Travel $travel, UserInterface $user): Response
     {
+        // Vérifier si l'utilisateur est inscrit à ce voyage
+        if (!$user->getTravels()->contains($travel)) {
+            // Ajouter un message flash pour informer que l'utilisateur n'est pas inscrit à ce voyage
+            $this->addFlash('warning', 'Vous n\'êtes pas inscrit à ce voyage.');
+
+            // Rediriger vers la liste des voyages
+            return $this->redirectToRoute('list_travels');
+        }
         $user->removeTravel($travel);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
@@ -76,6 +82,18 @@ class TravelController extends AbstractController
         );
 
         return $this->redirectToRoute('list_travels', ['id' => $travel->getId()]);
+    }
+
+    #[Route('/mes-voyages', name: 'user_travels')]
+    public function userTravels(UserInterface $user): Response
+    {
+        // Récupérer les voyages auxquels l'utilisateur est inscrit
+        $travels = $user->getTravels();
+
+        // Rendre la vue avec les voyages de l'utilisateur
+        return $this->render('travel/user_travels.html.twig', [
+            'travels' => $travels,
+        ]);
     }
 
 }

@@ -21,7 +21,7 @@
                 <td>{{ invite.id }}</td>
                 <td>{{ invite.firstName }}</td>
                 <td>{{ invite.lastName }}</td>
-                <td>{{ invite.appointmentTime|date("d-m-y h:m:s")}}</td>
+                <td>{{ invite.appointmentTime|date("d-m-y H:i")}}</td>
                 <td>
                     <button><a href="{{ path('app_admin_invite_show', {'id': invite.id}) }}">Afficher</a></button>
                     <button><a href="{{ path('app_admin_invite_edit', {'id': invite.id}) }}">Modifier</a></button>

@@ -47,20 +47,20 @@ class AppointmentType extends AbstractType
                     'Renseignement' => 'Renseignement',
                     'Reservation' => 'Reservation',
                     ]
-            ])
-
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            ]);
+        // Ajout dynamique des créneaux horaires disponibles
+            $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $form = $event->getForm();
                 $data = $event->getData();
 
-                if ($data instanceof Appointment) {
-                    $startDate = new \DateTime('now');
-                    $endDate = (clone $startDate)->modify('+1 year');
-                    $slots = $this->slotService->getAvailableSlots($startDate, $endDate);
+                // Par défaut, on utilise la plage de temps pour calculer les créneaux
+                $startDate = new \DateTime('now');
+                $endDate = (clone $startDate)->modify('+1 week'); // Ajustez la période si nécessaire
+                $availableSlots = $this->slotService->getAvailableSlots($startDate, $endDate);
 
                     $choices = [];
-                    foreach ($slots as $slot) {
-                        $choices[$slot['time']] = $slot['slot'];
+                    foreach ($availableSlots as $slot) {
+                        $choices[$slot['time']] = $slot['time'];
                     }
 
                     $form->add('slot', ChoiceType::class, [
@@ -68,7 +68,6 @@ class AppointmentType extends AbstractType
                         'choices' => $choices,
                         'required' => true,
                     ]);
-                }
             });
 
          $builder->add('appointmentTime', DateTimeType::class, [

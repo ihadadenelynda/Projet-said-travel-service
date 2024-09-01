@@ -40,7 +40,8 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/travels/create, roles: ROLE_ADMIN }
+        - { path: ^/travels, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/appointment, roles: IS_AUTHENTICATED_FULLY }
 
 
 when@test:

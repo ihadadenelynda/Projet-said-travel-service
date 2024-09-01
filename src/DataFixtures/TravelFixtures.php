@@ -27,10 +27,6 @@ class TravelFixtures extends Fixture
             $travel->setPhoto($faker->image);
             $manager->persist($travel);
         }
-
-        // $product = new Product();
-        // $manager->persist($product);
-
         $manager->flush();
     }
 

@@ -19,7 +19,7 @@
         {% for appointment in appointments %}
             <tr>
                 <td>{{ appointment.user }}</td>
-                <td> {{ appointment.appointmentTime|date('y-m-d h:i')}} </td>
+                <td> {{ appointment.appointmentTime|date('y-m-d H:i')}} </td>
                 <td>{{ appointment.motif }}</td>
                 <td>{{ appointment.createdBy.email }}</td>
 

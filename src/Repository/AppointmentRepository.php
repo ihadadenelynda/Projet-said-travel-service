@@ -17,6 +17,45 @@ class AppointmentRepository extends ServiceEntityRepository
         parent::__construct($registry, Appointment::class);
     }
 
+    /**
+     * @return Appointment[] Returns an array of Appointment objects
+     */
+    public function findByUserOrCreatedBy(User $user): array
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.user = :user')
+            ->orWhere('a.createdBy = :user')
+            ->setParameter('user', $user)
+            ->orderBy('a.appointmentTime', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Find an appointment by slot
+     */
+    public function findOneBySlot(string $start, string $end): ?Appointment
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb->where('a.appointmentTime < :end')
+            ->andWhere('a.appointmentTime > :start')
+            ->setParameter('start', $start)
+            ->setParameter('end', $end)
+            ->setMaxResults(1);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    public function findFutureAppointments(): array
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.appointmentTime > :now')
+            ->setParameter('now', new \DateTime())
+            ->orderBy('a.appointmentTime', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Appointment[] Returns an array of Appointment objects
 //     */
@@ -41,34 +80,4 @@ class AppointmentRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
-
-
-
-    /**
-     * @return Appointment[] Returns an array of Appointment objects
-     */
-    public function findByUserOrCreatedBy(User $user): array
-    {
-        return $this->createQueryBuilder('a')
-            ->where('a.user = :user')
-            ->orWhere('a.createdBy = :user')
-            ->setParameter('user', $user)
-            ->orderBy('a.appointmentTime', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * Find an appointment by slot
-     */
-    public function findOneBySlot(string $start, string $end): ?Appointment
-    {
-        return $this->createQueryBuilder('a')
-            ->where('a.appointmentTime >= :start')
-            ->andWhere('a.appointmentTime < :end')
-            ->setParameter('start', $start)
-            ->setParameter('end', $end)
-            ->getQuery()
-            ->getOneOrNullResult();
-    }
 }

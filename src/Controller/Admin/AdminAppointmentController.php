@@ -18,9 +18,9 @@ class AdminAppointmentController extends AbstractController
     #[Route('/', name: 'app_admin_appointment_index', methods: ['GET'])]
     public function index(AppointmentRepository $appointmentRepository): Response
     {
-        $appointments = $appointmentRepository->findAll();
+        $futureAppointments = $appointmentRepository->findFutureAppointments();
         return $this->render('admin_appointment/index.html.twig', [
-            'appointments' => $appointments,
+            'appointments' => $futureAppointments,
         ]);
     }
 
@@ -28,16 +28,15 @@ class AdminAppointmentController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $appointment = new Appointment();
+
         $form = $this->createForm(AppointmentType::class, $appointment);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
+
             $entityManager->persist($appointment);
             $entityManager->flush();
-
             return $this->redirectToRoute('app_admin_appointment_index', [], Response::HTTP_SEE_OTHER);
         }
-
         return $this->render('admin_appointment/new.html.twig', [
             'appointment' => $appointment,
             'form' => $form,
@@ -45,11 +44,10 @@ class AdminAppointmentController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_admin_appointment_show', methods: ['GET'])]
-    public function show(Appointment $appointment, User $user): Response
+    public function show(Appointment $appointment): Response
     {
         return $this->render('admin_appointment/show.html.twig', [
             'appointment' => $appointment,
-            'user'=>$user,
     ]);
 
     }

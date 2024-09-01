@@ -7,7 +7,7 @@ use DateTime;
 
 class AppointmentSlotService
 {
-    private $appointmentRepository;
+    private AppointmentRepository $appointmentRepository;
 
     public function __construct(AppointmentRepository $appointmentRepository)
     {
@@ -30,14 +30,22 @@ class AppointmentSlotService
                             'slot' => $this->calculateSlot($slotTime)
                         ];
                     }
-                    $slotTime->modify('+30 minutes');
+                    $slotTime->modify('+30 minutes');//Définir des créneaux de 30 minutes
                 }
             }
-            $current->modify('+1 day')->setTime(9, 0);
+            $current->modify('+1 day')->setTime(9, 0);//Passer au jour suivant à 9h
         }
 
         return $slots;
     }
+
+
+    /**
+     * Vérifie si un créneau horaire est disponible.
+     *
+     * @param DateTime $slotTime
+     * @return bool
+     */
 
     public function isSlotAvailable(DateTime $slotTime): bool
     {
@@ -48,8 +56,15 @@ class AppointmentSlotService
         return !$this->appointmentRepository->findOneBySlot($start, $end);
     }
 
-    public function calculateSlot(DateTime $datetime): string
+    /**
+     * Calcule et formate le créneau horaire.
+     *
+     * @param DateTime $datetime
+     * @return string
+     */
+
+   public function calculateSlot(DateTime $datetime): string
     {
-        return $datetime->format('Y-m-d H:i');
+       return $datetime->format('Y-m-d H:i');
     }
 }

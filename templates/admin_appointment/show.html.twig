@@ -13,11 +13,11 @@
             </tr>
             <tr>
                 <th>Nom et Prénom</th>
-                <td>{{user.firstName}}  {{ user.lastName }}</td>
+                <td>{{ appointment.user.firstName}} {{ appointment.user.lastName }}</td>
             </tr>
             <tr>
                 <th>AppointmentTime</th>
-                <td>{{ appointment.appointmentTime ? appointment.appointmentTime|date('Y-m-d h:i') : '' }}</td>
+                <td>{{ appointment.appointmentTime ? appointment.appointmentTime|date('Y-m-d H:i') : '' }}</td>
             </tr>
             <tr>
                 <th>Motif</th>
